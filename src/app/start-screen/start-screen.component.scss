@@ -2,9 +2,12 @@
 
 .start-screen{
   width: 100vw;
-  height: 100vh;
-  background-color: #000000;
+  height: 100vh;  
+  background-image: url('../../assets/img/board.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
   max-width: 100%;
+  position: relative;
   @include dFlex($jc: center, $ai: center, $fd: row, $g: 0px);
 
   >img {
