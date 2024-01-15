@@ -4,19 +4,22 @@
   border-top-left-radius: 50px;
   border-bottom-left-radius: 50px;
   width: 300px;
-  background-color: orange;
+  background-color: rgb(50, 50, 50, 0.8);
 
   @include dFlex($jc: flex-start, $ai: center, $fd: row, $g: 0px);
   img {
-    height: 80px;
-    width: auto;
+    height: 70px;
+    width: 70px;
     object-fit: cover;
     border-radius: 100%;
   }
 
-  span{
+  span {
     font-size: 32px;
     margin-left: 16px;
   }
+}
 
+.player-active{
+  background-color: orange;
 }

@@ -7,8 +7,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player.component';
 import {
   MatDialog,
-  MAT_DIALOG_DATA,
-  MatDialogRef,
   MatDialogTitle,
   MatDialogContent,
   MatDialogActions,
@@ -33,7 +31,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatDialogActions,
     MatDialogClose,
     FormsModule,
-    MatFormFieldModule
+    MatFormFieldModule,
   ],
   templateUrl: './game.component.html',
   styleUrl: './game.component.scss',
@@ -66,8 +64,10 @@ export class GameComponent implements OnInit {
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogAddPlayerComponent);
 
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
+    dialogRef.afterClosed().subscribe((name: string) => {
+      if (name != '') {
+        this.game.players.push(name);
+      }
     });
   }
 }
