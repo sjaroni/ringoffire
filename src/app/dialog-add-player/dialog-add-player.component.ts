@@ -16,7 +16,8 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 @Component({
   selector: 'app-dialog-add-player',
   standalone: true,
-  imports: [MatFormFieldModule,
+  imports: [
+    MatFormFieldModule,
     MatInputModule,
     FormsModule,
     MatButtonModule,
@@ -28,6 +29,9 @@ import {MatFormFieldModule} from '@angular/material/form-field';
   styleUrl: './dialog-add-player.component.scss'
 })
 export class DialogAddPlayerComponent {
+
+  name: string = '';
+
   constructor(
     public dialogRef: MatDialogRef<DialogAddPlayerComponent>,    
   ) {}
