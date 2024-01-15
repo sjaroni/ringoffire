@@ -1,0 +1,22 @@
+@import "../../styles/mixins.scss";
+
+.player {
+  border-top-left-radius: 50px;
+  border-bottom-left-radius: 50px;
+  width: 300px;
+  background-color: orange;
+
+  @include dFlex($jc: flex-start, $ai: center, $fd: row, $g: 0px);
+  img {
+    height: 80px;
+    width: auto;
+    object-fit: cover;
+    border-radius: 100%;
+  }
+
+  span{
+    font-size: 32px;
+    margin-left: 16px;
+  }
+
+}
