@@ -52,7 +52,7 @@ export class GameComponent implements OnInit {
 
   newGame(){
     this.game = new Game();
-    this.gameService.addGame();
+    this.gameService.addGame(this.game.toJson());
   }
 
   takeCard() {

@@ -1,5 +1,6 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, collection, onSnapshot, addDoc } from '@angular/fire/firestore';
+import { Firestore, collection, onSnapshot, addDoc, WithFieldValue, DocumentData } from '@angular/fire/firestore';
+import { Game } from '../../models/game';
 
 @Injectable({
   providedIn: 'root',
@@ -40,8 +41,8 @@ export class GameListService {
   }
 
   // Insert-Funktion
-  async addGame() {
-    await addDoc(this.getGamesRef(), {'Hallo':'Welt'})
+  async addGame(item: object) {
+    await addDoc(this.getGamesRef(), item)
       .catch((err) => {
         console.error(err);
       })
