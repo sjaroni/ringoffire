@@ -12,10 +12,11 @@ import {
   MatDialogActions,
   MatDialogClose,
 } from '@angular/material/dialog';
-
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { GameInfoComponent } from '../game-info/game-info.component';
+import { GameListService } from '../firebase-service/game-list.service'; 
+import { Firestore, collection, onSnapshot } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-game',
@@ -42,11 +43,16 @@ export class GameComponent implements OnInit {
   pickCardAnimation = false;
   currentCard: string | undefined = '';
   game: Game = new Game();
-
-  constructor(public dialog: MatDialog) {}
+  
+  constructor(private gameService: GameListService, public dialog: MatDialog) {}
 
   ngOnInit(): void {
-    console.log(this.game);
+    this.newGame();
+  }
+
+  newGame(){
+    this.game = new Game();
+    this.gameService.addGame();
   }
 
   takeCard() {
@@ -54,14 +60,14 @@ export class GameComponent implements OnInit {
       this.currentCard = this.game.stack.pop();
       this.pickCardAnimation = true;
 
-      
       setTimeout(() => {
         if (this.currentCard != undefined) {
           this.game.playedCards.push(this.currentCard);
         }
         this.pickCardAnimation = false;
         this.game.currentPlayer++;
-        this.game.currentPlayer = this.game.currentPlayer % this.game.players.length;
+        this.game.currentPlayer =
+          this.game.currentPlayer % this.game.players.length;
       }, 1000);
     }
   }
@@ -69,10 +75,10 @@ export class GameComponent implements OnInit {
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogAddPlayerComponent);
 
-    dialogRef.afterClosed().subscribe((name: string) => {      
-      if(name && name.length > 0){
-        this.game.players.push(name);      
-      }      
+    dialogRef.afterClosed().subscribe((name: string) => {
+      if (name && name.length > 0) {
+        this.game.players.push(name);
+      }
     });
   }
 }
