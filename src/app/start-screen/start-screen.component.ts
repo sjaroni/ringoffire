@@ -1,24 +1,20 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { GameListService } from '../firebase-service/game-list.service';
+import { Game } from '../../models/game';
 
 @Component({
   selector: 'app-start-screen',
   standalone: true,
   imports: [],
   templateUrl: './start-screen.component.html',
-  styleUrl: './start-screen.component.scss'
+  styleUrl: './start-screen.component.scss',
 })
 export class StartScreenComponent {
+  constructor(private gameService: GameListService) {}
 
-
-  constructor(private router: Router){ }
-
-
-  newGame(){    
-    // Star game
-    this.router.navigateByUrl('/game');
+  newGame() {
+    // Start game
+    let game = new Game();
+    this.gameService.addGame(game.toJson());
   }
-
-
 }
-

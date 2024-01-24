@@ -15,8 +15,8 @@ import {
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { GameInfoComponent } from '../game-info/game-info.component';
-import { GameListService } from '../firebase-service/game-list.service'; 
-import { Firestore, collection, onSnapshot } from '@angular/fire/firestore';
+import { GameListService } from '../firebase-service/game-list.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-game',
@@ -43,16 +43,29 @@ export class GameComponent implements OnInit {
   pickCardAnimation = false;
   currentCard: string | undefined = '';
   game: Game = new Game();
-  
-  constructor(private gameService: GameListService, public dialog: MatDialog) {}
+
+  constructor(
+    private route: ActivatedRoute,
+    private gameService: GameListService,
+    public dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.newGame();
+    this.route.params.subscribe((params) => {
+      const gameId: string = params['id'];
+      this.gameService.getGameData(gameId).subscribe((data) => {
+        console.log('Game Data in Component:', data);
+        this.game.currentPlayer = data['currentPlayer'];
+        this.game.playedCards = data['playedCards'];
+        this.game.players = data['players'];
+        this.game.stack = data['stack'];
+      });      
+    });
   }
 
-  newGame(){
-    this.game = new Game();
-    this.gameService.addGame(this.game.toJson());
+  newGame() {
+    this.game = new Game();    
   }
 
   takeCard() {
