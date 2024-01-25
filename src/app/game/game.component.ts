@@ -39,9 +39,7 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './game.component.html',
   styleUrl: './game.component.scss',
 })
-export class GameComponent implements OnInit {
-  pickCardAnimation = false;
-  currentCard: string | undefined = '';
+export class GameComponent implements OnInit {  
   game: Game = new Game();
   gameId: string | undefined;
 
@@ -62,6 +60,8 @@ export class GameComponent implements OnInit {
           this.game.playedCards = data['playedCards'];
           this.game.players = data['players'];
           this.game.stack = data['stack'];
+          this.game.pickCardAnimation = data['pickCardAnimation'];
+          this.game.currentCard = data['currentCard'];
         });
       }
     });
@@ -72,18 +72,20 @@ export class GameComponent implements OnInit {
   }
 
   takeCard() {
-    if (!this.pickCardAnimation) {
-      this.currentCard = this.game.stack.pop();
-      this.pickCardAnimation = true;
+    if (!this.game.pickCardAnimation) {
+      this.game.currentCard = this.game.stack.pop();
+      this.game.pickCardAnimation = true;
+
+      this.saveGame();
 
       setTimeout(() => {
-        if (this.currentCard != undefined) {
-          this.game.playedCards.push(this.currentCard);
+        if (this.game.currentCard != undefined) {
+          this.game.playedCards.push(this.game.currentCard);
         }
-        this.pickCardAnimation = false;
         this.game.currentPlayer++;
         this.game.currentPlayer =
         this.game.currentPlayer % this.game.players.length;
+        this.game.pickCardAnimation = false;
         this.saveGame();
       }, 1000);
     }
