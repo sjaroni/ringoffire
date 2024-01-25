@@ -17,6 +17,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { GameInfoComponent } from '../game-info/game-info.component';
 import { GameListService } from '../firebase-service/game-list.service';
 import { ActivatedRoute } from '@angular/router';
+import { EditPlayerComponent } from '../edit-player/edit-player.component';
 
 @Component({
   selector: 'app-game',
@@ -39,7 +40,7 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './game.component.html',
   styleUrl: './game.component.scss',
 })
-export class GameComponent implements OnInit {  
+export class GameComponent implements OnInit {
   game: Game = new Game();
   gameId: string | undefined;
 
@@ -59,6 +60,7 @@ export class GameComponent implements OnInit {
           this.game.currentPlayer = data['currentPlayer'];
           this.game.playedCards = data['playedCards'];
           this.game.players = data['players'];
+          this.game.playerImages = data['playerImages'];
           this.game.stack = data['stack'];
           this.game.pickCardAnimation = data['pickCardAnimation'];
           this.game.currentCard = data['currentCard'];
@@ -84,7 +86,7 @@ export class GameComponent implements OnInit {
         }
         this.game.currentPlayer++;
         this.game.currentPlayer =
-        this.game.currentPlayer % this.game.players.length;
+          this.game.currentPlayer % this.game.players.length;
         this.game.pickCardAnimation = false;
         this.saveGame();
       }, 1000);
@@ -97,6 +99,7 @@ export class GameComponent implements OnInit {
     dialogRef.afterClosed().subscribe((name: string) => {
       if (name && name.length > 0) {
         this.game.players.push(name);
+        this.game.playerImages.push('avatar.png');
         this.saveGame();
       }
     });
@@ -106,5 +109,20 @@ export class GameComponent implements OnInit {
     if (this.gameId !== undefined) {
       this.gameService.saveGameData(this.gameId, this.game.toJson());
     }
+  }
+
+  editPlayer(playerId: number) {
+    const dialogRef = this.dialog.open(EditPlayerComponent);
+    dialogRef.afterClosed().subscribe((change: string) => {
+      if (change) {
+        if (change == 'DELETE') {
+          this.game.playerImages.splice(playerId, 1);
+          this.game.players.splice(playerId, 1);
+        } else {
+          this.game.playerImages[playerId] = change;
+        }
+        this.saveGame();
+      }
+    });
   }
 }
