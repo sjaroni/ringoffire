@@ -5,6 +5,7 @@ import {
   onSnapshot,
   doc,
   addDoc,
+  updateDoc,
   WithFieldValue,
   DocumentData,
   query,
@@ -53,6 +54,13 @@ export class GameListService {
       });
 
       return () => unsubscribe();
+    });
+  }
+
+  async saveGameData(gameId: string, item: object) {
+    const docRef = this.getSingleDocRef('games', gameId);
+    await updateDoc(docRef, item).catch((err) => {
+      console.log(err);    
     });
   }
 

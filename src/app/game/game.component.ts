@@ -43,6 +43,7 @@ export class GameComponent implements OnInit {
   pickCardAnimation = false;
   currentCard: string | undefined = '';
   game: Game = new Game();
+  gameId: string | undefined;
 
   constructor(
     private route: ActivatedRoute,
@@ -53,19 +54,21 @@ export class GameComponent implements OnInit {
   ngOnInit(): void {
     this.newGame();
     this.route.params.subscribe((params) => {
-      const gameId: string = params['id'];
-      this.gameService.getGameData(gameId).subscribe((data) => {
-        console.log('Game Data in Component:', data);
-        this.game.currentPlayer = data['currentPlayer'];
-        this.game.playedCards = data['playedCards'];
-        this.game.players = data['players'];
-        this.game.stack = data['stack'];
-      });      
+      this.gameId = params['id'];
+      if (this.gameId !== undefined) {
+        this.gameService.getGameData(this.gameId).subscribe((data) => {
+          //console.log('Game Data in Component:', data);
+          this.game.currentPlayer = data['currentPlayer'];
+          this.game.playedCards = data['playedCards'];
+          this.game.players = data['players'];
+          this.game.stack = data['stack'];
+        });
+      }
     });
   }
 
   newGame() {
-    this.game = new Game();    
+    this.game = new Game();
   }
 
   takeCard() {
@@ -80,7 +83,8 @@ export class GameComponent implements OnInit {
         this.pickCardAnimation = false;
         this.game.currentPlayer++;
         this.game.currentPlayer =
-          this.game.currentPlayer % this.game.players.length;
+        this.game.currentPlayer % this.game.players.length;
+        this.saveGame();
       }, 1000);
     }
   }
@@ -91,7 +95,14 @@ export class GameComponent implements OnInit {
     dialogRef.afterClosed().subscribe((name: string) => {
       if (name && name.length > 0) {
         this.game.players.push(name);
+        this.saveGame();
       }
     });
+  }
+
+  saveGame() {
+    if (this.gameId !== undefined) {
+      this.gameService.saveGameData(this.gameId, this.game.toJson());
+    }
   }
 }
