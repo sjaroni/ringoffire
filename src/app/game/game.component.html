@@ -1,14 +1,20 @@
 <app-player
   (click)="editPlayer(i)"
   *ngFor="let player of game.players; let i = index"
-  [ngStyle]="{ 'top.px ': 100 + i * 90 }"
+  [ngStyle]="{ 'top.px ': 20 + i * 65 }"
   [playerActive]="i == game.currentPlayer"
   [name]="player"
   [image]="game.playerImages[i]"
   class="player-position"
 ></app-player>
 
-<div class="field">
+<div *ngIf="gameOver" class="game-over">
+<img src="./assets/img/game_over.png" alt="">
+</div>
+
+<img class="preload-image" src="assets/img/playing_cards-master/{{ game.stack[game.stack.length -1] }}.png"/>
+
+<div *ngIf="!gameOver" class="field">
   <div class="card-stack">
     <!-- Card stack -->
     <img

@@ -1,25 +1,30 @@
 @import "../../styles/mixins.scss";
 
 .player {
+  overflow: hidden;
   border-top-left-radius: 50px;
   border-bottom-left-radius: 50px;
   width: 300px;
-  background-color: rgb(182,179, 174, 0.8);
+  background-color: rgb(182, 179, 174, 0.8);
 
   @include dFlex($jc: flex-start, $ai: center, $fd: row, $g: 0px);
   img {
-    height: 70px;
-    width: 70px;
+    height: 50px;
+    width: 50px;
     object-fit: cover;
     border-radius: 100%;
   }
 
   span {
-    font-size: 32px;
-    margin-left: 16px;
+    font-size: 24px;
+    margin-left: 12px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    line-height: normal;
   }
 }
 
-.player-active{
-  background-color: rgb(255,160, 0, 0.9) !important;
+.player-active {
+  background-color: rgb(255, 160, 0, 0.9) !important;
 }
